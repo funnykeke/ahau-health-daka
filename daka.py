@@ -55,9 +55,10 @@ def getLoginPostData(mes, data):  # 用于登录
 
 
 def discern(uname, pwd):  # 验证码识别
+    result = {}
     while True:
         try:
-            data = {"username": uname, "password": pwd, "image": base64.b64encode(session.get(getKaptchaUrl).content),
+            data = {"username": uname, "password": pwd, "image": base64.b64encode(session.get(getKaptchaUrl).content).decode(),
                     "typeid": 11}
             result = json.loads(requests.post(settings['discernUrl'], json=data).text)
             code = result["data"]["result"]
