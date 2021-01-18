@@ -1,0 +1,5 @@
+noticeWhether: 0  # 打卡异常是否通知 默认关闭 如需通知自行修改为 1并添加下方 wechatNoticeUrl
+wechatNoticeUrl: ''  # 微信公众号通知url 可在sc.ftqq.com申请添加
+discernUrl: 'http://api.ttshitu.com/base64'  # 验证码识别平台 自行申请账号密码 如需更换平台请需修改discern()
+uname: ''  # 验证码识别平台账号
+pwd: ''  # 验证码识别平台密码
