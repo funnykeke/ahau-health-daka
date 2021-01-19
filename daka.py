@@ -3,7 +3,7 @@ import base64
 import json
 import time
 from random import random
-
+import logging
 import yaml
 from lxml import etree
 import requests
@@ -11,7 +11,8 @@ from PyRsa.pyb64 import Base64
 from PyRsa.pyrsa import RsaKey
 from apscheduler.schedulers.background import BlockingScheduler
 
-
+logging.basicConfig(level=logging.INFO, format='%(asctime)s  %(message)s', datefmt='%a, %d %b %Y %H:%M:%S +0000',
+                    filename='daka.log')
 with open('settings.yaml', 'r', encoding='utf-8') as a:
     settings = yaml.load(a.read(), Loader=yaml.FullLoader)
     a.close()
@@ -79,7 +80,7 @@ def daka(student):
             data = {'zhlx': 'xsxh', 'zh': str(student['xh']), 'mm': str(student['mm']), 'yzm': yzm}  # 登录信息
             LoginPostData = getLoginPostData(mes, data)
             if session.post(loginUrl, data=LoginPostData).json()['status'] == 'SUCCESS':
-                print(f"{student['xh']}登录成功")
+                logging.info(f"{student['xh']}登录成功")
                 break
             else:
                 pass
@@ -116,7 +117,7 @@ def daka(student):
                                'ydqszsfmc': '',
                                'ydqszsmc': '',
                                'ydqszxmc': ''}).json()['status'] == 'success'):
-            print(f'''{html.xpath('//input[@id="xm"]/@value')[0]}打卡成功''')
+            logging.info(f'''{html.xpath('//input[@id="xm"]/@value')[0]}打卡成功''')
         else:
             send("健康打卡", f'''{html.xpath('//input[@id="xm"]/@value')[0]}打卡失败''')
     except Exception as e:
@@ -129,7 +130,6 @@ def run():
     with open('students.yaml', 'r', encoding='utf-8') as s:
         students = yaml.load(s.read(), Loader=yaml.FullLoader)
         s.close()
-    print(time.asctime(time.localtime(time.time())))
     for student in students:
         daka(student)
 
